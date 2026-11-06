@@ -92,11 +92,9 @@ def average_rating(movies):
 
 def catalog_age_stats(movies, current_year=2026):
     ages = [current_year - movie["year"] for movie in movies]
-
     oldest = max(ages)
     newest = min(ages)
     average_age = math.ceil(sum(ages) / len(ages))
-
     return (oldest, newest, average_age)
 
 
@@ -145,9 +143,27 @@ def find_first_masterpiece(movies):
 
 def count_long_movies(movies, threshold=120):
     long_movies = 0
-
     for movie in movies:
         if movie["duration_min"] > threshold:
             long_movies += 1
-
     return long_movies
+
+
+def normalize_title(title):
+    normalized_title = []
+    for word in title.split():
+        normalized_title.append(word[0].upper() + word[1:])
+    return " ".join(normalized_title)
+
+
+def make_slug(title):
+    return normalize_title(title).lower().replace(" ", "-")
+
+
+def format_report_line(movie):
+    normalized_title = normalize_title(movie["title"])
+    sorted_genres = ", ".join(sorted(movie["genres"]))
+
+    result = f'"{normalized_title}" ({movie["year"]}) — {movie["rating"]}/10, '
+    result += f'{duration_in_hours(movie["duration_min"])}, жанры: {sorted_genres}'
+    return result
