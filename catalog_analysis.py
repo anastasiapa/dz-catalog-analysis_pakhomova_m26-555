@@ -238,3 +238,30 @@ def check_generator(movies):
         if movie["rating"] > 7
     )
     print(top_movies_duration)
+
+
+def build_report(movies):
+    print("ОТЧЕТ ПО КАТАЛОГУ")
+    print(f"Средний рейтинг: {average_rating(movies)}")
+    print(f"Средний возраст фильмов: {catalog_age_stats(movies)[2]} лет")
+    print()
+
+    print("Топ-3 фильма:")
+    movies_by_title = {movie["title"]: movie for movie in movies}
+    for title, rating in top_n_by_rating(movies):
+        print(f"  {format_report_line(movies_by_title[title])}")
+    print()
+
+    print("Фильмов по жанрам:")
+    genres = count_by_genre(movies)
+    for genre, count in sorted(
+        genres.items(), key=lambda item: (-item[1], item[0])
+    ):
+        print(f"  {genre} — {count}")
+    print()
+
+    print("Все жанры каталога: " + ", ".join(sorted(all_genres(movies))))
+
+
+if __name__ == "__main__":
+    build_report(movies)
