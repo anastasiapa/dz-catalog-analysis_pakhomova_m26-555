@@ -221,3 +221,20 @@ def genres_only_in_one(movies_a, movies_b):
     genres_a = all_genres(movies_a)
     genres_b = all_genres(movies_b)
     return genres_a - genres_b
+
+
+def iter_high_rated(movies, min_rating=8.0):
+    for movie in movies:
+        if movie["rating"] >= min_rating:
+            yield movie
+
+
+def check_generator(movies):
+    for movie in iter_high_rated(movies):
+        print(format_report_line(movie))
+    top_movies_duration = sum(
+        movie["duration_min"]
+        for movie in movies
+        if movie["rating"] > 7
+    )
+    print(top_movies_duration)
